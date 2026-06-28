@@ -1,0 +1,9 @@
+{
+    "fecha_validacion": "2026-06-27 21:08:06",
+    "dispositivo": "M-Castillo",
+    "resultados_validacion": {
+        "estado_interfaces": "Interface              IP-Address      OK? Method Status                Protocol\nGigabitEthernet1       192.168.56.101  YES DHCP   up                    up      \nGigabitEthernet2       unassigned      YES unset  up                    up      \nGigabitEthernet2.10    192.168.10.1    YES manual up                    up      \nGigabitEthernet2.20    192.168.20.1    YES manual up                    up      \nGigabitEthernet2.30    192.168.30.1    YES manual up                    up      ",
+        "estado_ntp": "\n  address         ref clock       st   when   poll reach  delay  offset   disp\n * sys.peer, # selected, + candidate, - outlyer, x falseticker, ~ configured"
+    },
+    "estado_general": "Exitoso"
+}

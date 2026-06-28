@@ -1,0 +1,66 @@
+---
+- name: Fase 1 - Configuracion Base y de Red
+  hosts: routers
+  gather_facts: no
+
+  tasks:
+    - name: 1. Configurar Hostname
+      ios_system:
+        hostname: M-Castillo
+
+    - name: 2. Configurar Servidor NTP
+      ios_config:
+        lines:
+          - ntp server cl.pool.ntp.org
+
+    - name: 3. Configurar Usuarios (Solo lectura y Control total)
+      ios_config:
+        lines:
+          - username admin privilege 15 secret cisco123
+          - username user_read privilege 1 secret cisco123
+
+    - name: 4. Configurar SSH
+      ios_config:
+        lines:
+          - ip ssh version 2
+          - ip ssh time-out 60
+          - ip ssh authentication-retries 3
+
+    - name: 5. Logging de seguridad (Bloqueo a los 3 intentos)
+      ios_config:
+        lines:
+          - login block-for 120 attempts 3 within 60
+
+    - name: 6. Configurar Interfaz Fisica (Hacia el Switch)
+      ios_config:
+        lines:
+          - no shutdown
+        parents: interface GigabitEthernet2
+
+    - name: 7. Configurar Subinterfaces Logicas (VLAN 10 - PC1)
+      ios_config:
+        lines:
+          - encapsulation dot1Q 10
+          - ip address 192.168.10.1 255.255.255.0
+          - no shutdown
+        parents: interface GigabitEthernet2.10
+
+    - name: 8. Configurar Subinterfaces Logicas (VLAN 20 - PC2)
+      ios_config:
+        lines:
+          - encapsulation dot1Q 20
+          - ip address 192.168.20.1 255.255.255.0
+          - no shutdown
+        parents: interface GigabitEthernet2.20
+
+    - name: 9. Configurar Subinterfaces Logicas (VLAN 30 - SERVER)
+      ios_config:
+        lines:
+          - encapsulation dot1Q 30
+          - ip address 192.168.30.1 255.255.255.0
+          - no shutdown
+        parents: interface GigabitEthernet2.30
+
+    - name: 10. Guardar configuracion
+      ios_config:
+        save_when: always
